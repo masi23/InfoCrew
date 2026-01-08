@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="pl">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Filmy i seriale</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <header class="top-bar">
+      <input
+        type="text"
+        id="searchInput"
+        placeholder="Szukaj filmu, opisu lub aktora..."
+      />
+
+      <select id="sortSelect">
+        <option value="popularity">Popularność</option>
+        <option value="rating">Ocena</option>
+        <option value="newest">Najnowsze</option>
+        <option value="title">Tytuł</option>
+      </select>
+
+      <button id="resetFilters">Reset</button>
+    </header>
+
+    <aside class="filters">
+      <form>
+        <section class="filter-group">
+          <h4>Platforma</h4>
+          <label class="filter-option">
+            <input type="checkbox" name="platform" value="Netflix" />
+            Netflix
+          </label>
+          <label class="filter-option">
+            <input type="checkbox" name="platform" value="Prime Video" />
+            Prime Video
+          </label>
+          <label class="filter-option">
+            <input type="checkbox" name="platform" value="HBO Max" />
+            HBO Max
+          </label>
+          <label class="filter-option">
+            <input type="checkbox" name="platform" value="Disney+" />
+            Disney+
+          </label>
+          <label class="filter-option">
+            <input type="checkbox" name="platform" value="Apple TV+" />
+            Apple TV+
+          </label>
+        </section>
+
+        <section class="filter-group">
+          <h4>Gatunek</h4>
+          <label class="filter-option">
+            <input type="checkbox" name="category" value="Akcja" />
+            Akcja
+          </label>
+          <label class="filter-option">
+            <input type="checkbox" name="category" value="Dramat" />
+            Dramat
+          </label>
+          <label class="filter-option">
+            <input type="checkbox" name="category" value="Sci-Fi" />
+            Sci-Fi
+          </label>
+          <label class="filter-option">
+            <input type="checkbox" name="category" value="Fantasy" />
+            Fantasy
+          </label>
+          <label class="filter-option">
+            <input type="checkbox" name="category" value="Komedia" />
+            Komedia
+          </label>
+        </section>
+
+        <section class="filter-group">
+          <h4>Typ</h4>
+          <label class="filter-option">
+            <input type="radio" name="type" value="" checked />
+            Wszystkie
+          </label>
+          <label class="filter-option">
+            <input type="radio" name="type" value="Film" />
+            Film
+          </label>
+          <label class="filter-option">
+            <input type="radio" name="type" value="Serial" />
+            Serial
+          </label>
+        </section>
+
+        <section class="filter-group">
+          <h4>Dodatkowe</h4>
+
+          <select id="languageFilter" class="filter-select">
+            <option value="">Język</option>
+            <option value="Angielski">Angielski</option>
+            <option value="Polski">Polski</option>
+            <option value="Hiszpański">Hiszpański</option>
+            <option value="Koreański">Koreański</option>
+            <option value="Japoński">Japoński</option>
+          </select>
+
+          <select id="yearFilter" class="filter-select">
+            <option value="">Rok</option>
+            <option value="2024">2024</option>
+            <option value="2023">2023</option>
+            <option value="2022">2022</option>
+            <option value="2021">2021</option>
+            <option value="older">Starsze</option>
+          </select>
+
+          <select id="ratingFilter" class="filter-select">
+            <option value="">Ocena min.</option>
+            <option value="9">9+</option>
+            <option value="8">8+</option>
+            <option value="7">7+</option>
+          </select>
+        </section>
+      </form>
+    </aside>
+
+    <main class="content">
+      <div class="results-bar">
+        Znaleziono: <strong id="resultsCount">0</strong>
+      </div>
+
+      <div id="noResults" class="no-results" style="display: none">
+        Brak wyników
+      </div>
+
+      <section id="moviesGrid" class="movies-grid"></section>
+    </main>
+
+    <div id="modalOverlay" class="modal-overlay">
+      <div class="modal">
+        <button id="modalClose" class="modal-close">×</button>
+
+        <img id="modalBackdrop" class="modal-backdrop" alt="" />
+
+        <h2 id="modalTitle"></h2>
+
+        <div id="modalMeta" class="modal-meta"></div>
+
+        <p id="modalDescription"></p>
+
+        <div id="modalCast"></div>
+
+        <button id="btnWatch" class="btn-watch">Oglądaj</button>
+      </div>
+    </div>
+
+    <script type="module" src="js/main.js"></script>
+  </body>
+</html>
