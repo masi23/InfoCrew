@@ -1,0 +1,17 @@
+<?php
+
+class User
+{
+    public int $id;
+    public string $username;
+    public string $password;
+    public string $role;
+
+    public function __construct($id, $username, $password, $role)
+    {
+        $this->id = $id;
+        $this->username = $username;
+        $this->password = $password;
+        $this->role = $role;
+    }
+}

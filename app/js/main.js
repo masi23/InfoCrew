@@ -1,18 +1,43 @@
-import { allMovies } from "./data/movies.js";
+// import { allMovies } from "./data/movies.js";
 // import { debounce } from "./utils/debounce.js";
 import { $, $$ } from "./utils/dom.js";
 import { getFilters, applyFilters } from "./filters/filters.js";
 import { renderMovies } from "./ui/render.js";
 import { closeModal } from "./ui/modal.js";
 
-function update() {
+let allMovies = [];
+
+async function fetchMovies() {
+  try {
+    const response = await fetch(
+      "http://localhost:8000/index.php?controller=movie&action=index",
+    );
+    console.log(response);
+    if (!response.ok) {
+      throw new Error("Błąd pobierania danych");
+    }
+
+    allMovies = await response.json();
+    update();
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+async function update() {
   const filters = getFilters();
-  const filtered = applyFilters(allMovies, filters);
-  renderMovies(filtered);
+  const params = new URLSearchParams(filters);
+  const response = await fetch(
+    `http://localhost:8000/index.php?controller=movie&action=index&${params}`,
+  );
+  const data = await response.json();
+  renderMovies(data);
+  // const filtered = applyFilters(allMovies, filters);
+  // renderMovies(filtered);
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  renderMovies(allMovies);
+  fetchMovies();
 
   // $("#searchInput").addEventListener("input", debounce(update));
   $("#sortSelect").addEventListener("change", update);
@@ -22,7 +47,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   $$(".filter-option input, .filter-select").forEach((el) =>
-    el.addEventListener("change", update)
+    el.addEventListener("change", update),
   );
 
   $("#modalClose").addEventListener("click", closeModal);
