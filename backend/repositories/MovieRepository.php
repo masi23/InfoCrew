@@ -65,10 +65,10 @@ class MovieRepository
         );
     }
 
-    // language
-    if (!empty($filters['language'])) {
+    // country
+    if (!empty($filters['country'])) {
         $movies = array_filter($movies, fn($m) =>
-            $m->language === $filters['language']
+            $m->country === $filters['country']
         );
     }
 

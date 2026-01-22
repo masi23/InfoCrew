@@ -5,7 +5,7 @@ export function getFilters() {
     search: $("#searchInput").value.toLowerCase(),
     platforms: [...$$('input[name="platform"]:checked')].map((el) => el.value),
     categories: [...$$('input[name="category"]:checked')].map((el) => el.value),
-    language: $("#languageFilter").value,
+    country: $("#countryFilter").value,
     year: $("#yearFilter").value,
     rating: $("#ratingFilter").value,
     type: document.querySelector('input[name="type"]:checked')?.value || "",
@@ -35,8 +35,8 @@ export function applyFilters(movies, filters) {
     );
   }
 
-  if (filters.language) {
-    result = result.filter((m) => m.language === filters.language);
+  if (filters.country) {
+    result = result.filter((m) => m.country === filters.country);
   }
 
   if (filters.year) {
