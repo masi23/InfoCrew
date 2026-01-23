@@ -116,14 +116,14 @@ class MovieRepository
             });
         }
 
-        // --- FILTROWANIE PLATFORM (Poprawione nazwy) ---
+        // --- FILTROWANIE PLATFORM ---
         $platformVal = $filters['platform'] ?? ($filters['platforms'] ?? null);
         if (!empty($platformVal)) {
             $platforms = explode(',', $platformVal);
             $movies = array_filter($movies, fn($m) => in_array($m->platform, $platforms));
         }
 
-        // --- FILTROWANIE GATUNKÓW (Poprawione nazwy) ---
+        // --- FILTROWANIE GATUNKÓW ---
         $categoryVal = $filters['category'] ?? ($filters['categories'] ?? null);
         if (!empty($categoryVal)) {
             $categories = explode(',', $categoryVal);
@@ -132,10 +132,12 @@ class MovieRepository
             );
         }
 
+        // --- JĘZYK ---
         if (!empty($filters['language'])) {
             $movies = array_filter($movies, fn($m) => $m->language === $filters['language']);
         }
 
+        // --- ROK ---
         if (!empty($filters['year'])) {
             if ($filters['year'] === 'older') {
                 $movies = array_filter($movies, fn($m) => (int)$m->year < 2019);
@@ -144,10 +146,12 @@ class MovieRepository
             }
         }
 
+        // --- OCENA ---
         if (!empty($filters['rating'])) {
             $movies = array_filter($movies, fn($m) => (float)$m->rating >= (float)$filters['rating']);
         }
 
+        // --- TYP ---
         if (!empty($filters['type'])) {
             $movies = array_filter($movies, fn($m) => $m->type === $filters['type']);
         }

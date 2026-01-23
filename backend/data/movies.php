@@ -1,6 +1,6 @@
 <?php
 return array (
-  0 => 
+  0 =>
   array (
     'id' => 1,
     'title' => 'Incepcja',
@@ -11,14 +11,14 @@ return array (
     'year' => 2010,
     'duration' => '148 min',
     'language' => 'Angielski',
-    'genres' => 
+    'genres' =>
     array (
       0 => 'Sci-Fi',
       1 => 'Akcja',
       2 => 'Thriller',
     ),
     'type' => 'Film',
-    'cast' => 
+    'cast' =>
     array (
       0 => 'Leonardo DiCaprio',
       1 => 'Marion Cotillard',
@@ -26,15 +26,15 @@ return array (
     ),
     'description' => 'Złodziej, który kradnie tajemnice korporacyjne za pomocą technologii dzielenia snów...',
     'popularity' => 95,
-    'reviews' => 
+    'reviews' =>
     array (
-      0 => 
+      0 =>
       array (
         'user' => 'Marek',
         'text' => 'Genialny film, oglądałem 5 razy!',
         'date' => '2024-01-10',
       ),
-      1 => 
+      1 =>
       array (
         'user' => 'Anna',
         'text' => 'Trochę skomplikowany, ale warto.',
@@ -42,7 +42,7 @@ return array (
       ),
     ),
   ),
-  1 => 
+  1 =>
   array (
     'id' => 2,
     'title' => 'Protokół Cienia',
@@ -53,13 +53,13 @@ return array (
     'year' => 2023,
     'duration' => '135 min',
     'language' => 'Angielski',
-    'genres' => 
+    'genres' =>
     array (
       0 => 'Akcja',
       1 => 'Thriller',
     ),
     'type' => 'Film',
-    'cast' => 
+    'cast' =>
     array (
       0 => 'Chris Hemsworth',
       1 => 'Rebecca Ferguson',
@@ -67,15 +67,15 @@ return array (
     ),
     'description' => 'Elitarny agent zostaje wrobiony w zbrodnię, której nie popełnił. Musi odkryć prawdę i oczyścić swoje imię, zanim będzie za późno.',
     'popularity' => 88,
-    'reviews' => 
+    'reviews' =>
     array (
-      0 => 
+      0 =>
       array (
         'user' => 'Użytkownik',
         'text' => 'norm',
         'date' => '2026-01-23',
       ),
-      1 => 
+      1 =>
       array (
         'user' => 'Admin',
         'text' => 'Solidne kino akcji.',
@@ -83,7 +83,7 @@ return array (
       ),
     ),
   ),
-  2 => 
+  2 =>
   array (
     'id' => 3,
     'title' => 'Ostatnia Symfonia',
@@ -94,12 +94,12 @@ return array (
     'year' => 2024,
     'duration' => '118 min',
     'language' => 'Angielski',
-    'genres' => 
+    'genres' =>
     array (
       0 => 'Dramat',
     ),
     'type' => 'Film',
-    'cast' => 
+    'cast' =>
     array (
       0 => 'Saoirse Ronan',
       1 => 'Timothée Chalamet',
@@ -107,21 +107,21 @@ return array (
     ),
     'description' => 'Historia miłosna osadzona w świecie klasycznej muzyki. Ostatni koncert legendarnej orkiestry staje się tłem dla głębokiej opowieści o życiu i stracie.',
     'popularity' => 92,
-    'reviews' => 
+    'reviews' =>
     array (
-      0 => 
+      0 =>
       array (
         'user' => 'Użytkownik',
         'text' => 'nic',
         'date' => '2026-01-23',
       ),
-      1 => 
+      1 =>
       array (
         'user' => 'Użytkownik',
         'text' => 'nic',
         'date' => '2026-01-23',
       ),
-      2 => 
+      2 =>
       array (
         'user' => 'Meloman',
         'text' => 'Piękna muzyka i wzruszająca historia.',
@@ -129,7 +129,7 @@ return array (
       ),
     ),
   ),
-  3 => 
+  3 =>
   array (
     'id' => 4,
     'title' => 'Kroniki Mroku',
@@ -140,13 +140,13 @@ return array (
     'year' => 2023,
     'duration' => '3 sezony',
     'language' => 'Angielski',
-    'genres' => 
+    'genres' =>
     array (
       0 => 'Thriller',
       1 => 'Dramat',
     ),
     'type' => 'Serial',
-    'cast' => 
+    'cast' =>
     array (
       0 => 'Cillian Murphy',
       1 => 'Jodie Comer',
@@ -154,11 +154,11 @@ return array (
     ),
     'description' => 'Detektyw bada tajemnicze zniknięcia w małym nadmorskim miasteczku. Każdy odcinek odsłania mroczniejsze sekrety i nadprzyrodzone elementy.',
     'popularity' => 90,
-    'reviews' => 
+    'reviews' =>
     array (
     ),
   ),
-  4 => 
+  4 =>
   array (
     'id' => 5,
     'title' => 'Prędkość',
@@ -169,13 +169,13 @@ return array (
     'year' => 2024,
     'duration' => '125 min',
     'language' => 'Angielski',
-    'genres' => 
+    'genres' =>
     array (
       0 => 'Akcja',
       1 => 'Sci-Fi',
     ),
     'type' => 'Film',
-    'cast' => 
+    'cast' =>
     array (
       0 => 'Tom Holland',
       1 => 'Zendaya',
@@ -183,11 +183,11 @@ return array (
     ),
     'description' => 'W dystopijnej przyszłości nielegalni uliczni wyścigowcy rywalizują w śmiertelnych wyścigach przez megamiasta.',
     'popularity' => 85,
-    'reviews' => 
+    'reviews' =>
     array (
     ),
   ),
-  5 => 
+  5 =>
   array (
     'id' => 6,
     'title' => 'Echa Jutra',
@@ -198,13 +198,13 @@ return array (
     'year' => 2023,
     'duration' => '2 sezony',
     'language' => 'Angielski',
-    'genres' => 
+    'genres' =>
     array (
       0 => 'Sci-Fi',
       1 => 'Dramat',
     ),
     'type' => 'Serial',
-    'cast' => 
+    'cast' =>
     array (
       0 => 'Pedro Pascal',
       1 => 'Sandra Oh',
@@ -212,11 +212,11 @@ return array (
     ),
     'description' => 'Nagradzany serial o podróżnikach w czasie próbujących zapobiec katastrofom ekologicznym.',
     'popularity' => 87,
-    'reviews' => 
+    'reviews' =>
     array (
     ),
   ),
-  6 => 
+  6 =>
   array (
     'id' => 7,
     'title' => 'Karmazynowa Zasłona',
@@ -227,12 +227,12 @@ return array (
     'year' => 2024,
     'duration' => '138 min',
     'language' => 'Angielski',
-    'genres' => 
+    'genres' =>
     array (
       0 => 'Thriller',
     ),
     'type' => 'Film',
-    'cast' => 
+    'cast' =>
     array (
       0 => 'Lupita Nyong\'o',
       1 => 'Daniel Kaluuya',
@@ -240,11 +240,11 @@ return array (
     ),
     'description' => 'Przerażający film o rodzinie, która wprowadza się do starożytnej rezydencji z mroczną historią.',
     'popularity' => 82,
-    'reviews' => 
+    'reviews' =>
     array (
     ),
   ),
-  7 => 
+  7 =>
   array (
     'id' => 8,
     'title' => 'Imperium Północy',
@@ -255,13 +255,13 @@ return array (
     'year' => 2022,
     'duration' => '4 sezony',
     'language' => 'Angielski',
-    'genres' => 
+    'genres' =>
     array (
       0 => 'Dramat',
       1 => 'Thriller',
     ),
     'type' => 'Serial',
-    'cast' => 
+    'cast' =>
     array (
       0 => 'Brian Cox',
       1 => 'Sarah Snook',
@@ -269,33 +269,33 @@ return array (
     ),
     'description' => 'Epicka saga kryminalna obejmująca dekady, śledząca wzlot i upadek organizacji przestępczej.',
     'popularity' => 94,
-    'reviews' => 
+    'reviews' =>
     array (
-      0 => 
+      0 =>
       array (
         'user' => 'Użytkownik',
         'text' => 'recenzja',
         'date' => '2026-01-23',
       ),
-      1 => 
+      1 =>
       array (
         'user' => 'Użytkownik',
         'text' => 'z',
         'date' => '2026-01-23',
       ),
-      2 => 
+      2 =>
       array (
         'user' => 'Użytkownik',
         'text' => 'dobry film',
         'date' => '2026-01-23',
       ),
-      3 => 
+      3 =>
       array (
         'user' => 'Użytkownik',
         'text' => 'dobre',
         'date' => '2026-01-23',
       ),
-      4 => 
+      4 =>
       array (
         'user' => 'Użytkownik',
         'text' => 'dobry film',
@@ -303,7 +303,7 @@ return array (
       ),
     ),
   ),
-  8 => 
+  8 =>
   array (
     'id' => 9,
     'title' => 'Dryfowanie Gwiazd',
@@ -314,13 +314,13 @@ return array (
     'year' => 2024,
     'duration' => '155 min',
     'language' => 'Angielski',
-    'genres' => 
+    'genres' =>
     array (
       0 => 'Sci-Fi',
       1 => 'Akcja',
     ),
     'type' => 'Film',
-    'cast' => 
+    'cast' =>
     array (
       0 => 'Matthew McConaughey',
       1 => 'Jessica Chastain',
@@ -328,9 +328,9 @@ return array (
     ),
     'description' => 'Załoga astronautów odkrywa starożytny artefakt kosmitów, który może zmienić ludzkie rozumienie wszechświata.',
     'popularity' => 91,
-    'reviews' => 
+    'reviews' =>
     array (
-      0 => 
+      0 =>
       array (
         'user' => 'Użytkownik',
         'text' => 'recenzja',
@@ -338,7 +338,7 @@ return array (
       ),
     ),
   ),
-  9 => 
+  9 =>
   array (
     'id' => 10,
     'title' => 'Śmiechy Najważniejsze',
@@ -349,12 +349,12 @@ return array (
     'year' => 2023,
     'duration' => '102 min',
     'language' => 'Angielski',
-    'genres' => 
+    'genres' =>
     array (
       0 => 'Komedia',
     ),
     'type' => 'Film',
-    'cast' => 
+    'cast' =>
     array (
       0 => 'Awkwafina',
       1 => 'Kumail Nanjiani',
@@ -362,11 +362,11 @@ return array (
     ),
     'description' => 'Dwóch rywalizujących komików stand-upowych niechętnie łączy siły na trasę komediową.',
     'popularity' => 78,
-    'reviews' => 
+    'reviews' =>
     array (
     ),
   ),
-  10 => 
+  10 =>
   array (
     'id' => 11,
     'title' => 'Królestwo Popiołu',
@@ -377,14 +377,14 @@ return array (
     'year' => 2021,
     'duration' => '5 sezonów',
     'language' => 'Angielski',
-    'genres' => 
+    'genres' =>
     array (
       0 => 'Dramat',
       1 => 'Akcja',
       2 => 'Fantasy',
     ),
     'type' => 'Serial',
-    'cast' => 
+    'cast' =>
     array (
       0 => 'Kit Harington',
       1 => 'Emilia Clarke',
@@ -392,45 +392,45 @@ return array (
     ),
     'description' => 'Epicka seria fantasy śledząca walczące królestwa w brutalnym średniowiecznym świecie.',
     'popularity' => 96,
-    'reviews' => 
+    'reviews' =>
     array (
-      0 => 
+      0 =>
       array (
         'user' => 'Użytkownik',
         'text' => 'recen',
         'date' => '2026-01-23',
       ),
-      1 => 
+      1 =>
       array (
         'user' => 'Użytkownik',
         'text' => 'recenzja',
         'date' => '2026-01-23',
       ),
-      2 => 
+      2 =>
       array (
         'user' => 'Użytkownik',
         'text' => 'z',
         'date' => '2026-01-23',
       ),
-      3 => 
+      3 =>
       array (
         'user' => 'Użytkownik',
         'text' => 'recenzja',
         'date' => '2026-01-23',
       ),
-      4 => 
+      4 =>
       array (
         'user' => 'Użytkownik',
         'text' => 'rec',
         'date' => '2026-01-23',
       ),
-      5 => 
+      5 =>
       array (
         'user' => 'Użytkownik',
         'text' => 'incepcja',
         'date' => '2026-01-23',
       ),
-      6 => 
+      6 =>
       array (
         'user' => 'Użytkownik',
         'text' => 'recenzja',
@@ -438,7 +438,7 @@ return array (
       ),
     ),
   ),
-  11 => 
+  11 =>
   array (
     'id' => 12,
     'title' => 'Cisza Między Nami',
@@ -449,22 +449,22 @@ return array (
     'year' => 2023,
     'duration' => '121 min',
     'language' => 'Angielski',
-    'genres' => 
+    'genres' =>
     array (
       0 => 'Dramat',
     ),
     'type' => 'Film',
-    'cast' => 
+    'cast' =>
     array (
       0 => 'Różne prawdziwe osoby',
     ),
     'description' => 'Poruszający film dokumentalny badający ludzkie połączenia poprzez historie utraty, nadziei i odporności.',
     'popularity' => 84,
-    'reviews' => 
+    'reviews' =>
     array (
     ),
   ),
-  12 => 
+  12 =>
   array (
     'id' => 13,
     'title' => 'Miejski Labirynt',
@@ -475,13 +475,13 @@ return array (
     'year' => 2022,
     'duration' => '112 min',
     'language' => 'Polski',
-    'genres' => 
+    'genres' =>
     array (
       0 => 'Akcja',
       1 => 'Thriller',
     ),
     'type' => 'Film',
-    'cast' => 
+    'cast' =>
     array (
       0 => 'Marcin Dorociński',
       1 => 'Agata Kulesza',
@@ -489,9 +489,9 @@ return array (
     ),
     'description' => 'Były policjant zostaje wciągnięty w niebezpieczną grę z warszawskim półświatkiem.',
     'popularity' => 72,
-    'reviews' => 
+    'reviews' =>
     array (
-      0 => 
+      0 =>
       array (
         'user' => 'Krytyk',
         'text' => 'Dobry, mroczny klimat Warszawy.',
@@ -499,7 +499,7 @@ return array (
       ),
     ),
   ),
-  13 => 
+  13 =>
   array (
     'id' => 14,
     'title' => 'Neonowy Puls',
@@ -510,24 +510,24 @@ return array (
     'year' => 2024,
     'duration' => '1 sezon',
     'language' => 'Angielski',
-    'genres' => 
+    'genres' =>
     array (
       0 => 'Sci-Fi',
       1 => 'Akcja',
     ),
     'type' => 'Serial',
-    'cast' => 
+    'cast' =>
     array (
       0 => 'Florence Pugh',
       1 => 'Austin Butler',
     ),
     'description' => 'W świecie, gdzie wspomnienia można kupić jako cyfrowe pliki, młoda hakerka odkrywa spisek.',
     'popularity' => 89,
-    'reviews' => 
+    'reviews' =>
     array (
     ),
   ),
-  14 => 
+  14 =>
   array (
     'id' => 15,
     'title' => 'Szkarłatny Świt',
@@ -538,22 +538,22 @@ return array (
     'year' => 2023,
     'duration' => '142 min',
     'language' => 'Japoński',
-    'genres' => 
+    'genres' =>
     array (
       0 => 'Fantasy',
       1 => 'Akcja',
     ),
     'type' => 'Film',
-    'cast' => 
+    'cast' =>
     array (
       0 => 'Ken Watanabe',
       1 => 'Hiroyuki Sanada',
     ),
     'description' => 'Epicka baśń o ostatnim strażniku magicznego lasu.',
     'popularity' => 93,
-    'reviews' => 
+    'reviews' =>
     array (
-      0 => 
+      0 =>
       array (
         'user' => 'Użytkownik',
         'text' => 'skra',
@@ -561,7 +561,7 @@ return array (
       ),
     ),
   ),
-  15 => 
+  15 =>
   array (
     'id' => 16,
     'title' => 'Kod Milczenia',
@@ -572,23 +572,23 @@ return array (
     'year' => 2021,
     'duration' => '105 min',
     'language' => 'Hiszpański',
-    'genres' => 
+    'genres' =>
     array (
       0 => 'Thriller',
     ),
     'type' => 'Film',
-    'cast' => 
+    'cast' =>
     array (
       0 => 'Javier Bardem',
       1 => 'Penélope Cruz',
     ),
     'description' => 'Podczas spokojnego urlopu na wybrzeżu, małżeństwo znajduje zaszyfrowaną wiadomość.',
     'popularity' => 65,
-    'reviews' => 
+    'reviews' =>
     array (
     ),
   ),
-  16 => 
+  16 =>
   array (
     'id' => 17,
     'title' => 'Wyspa Zapomnianych',
@@ -599,58 +599,58 @@ return array (
     'year' => 2024,
     'duration' => '2 sezony',
     'language' => 'Angielski',
-    'genres' => 
+    'genres' =>
     array (
       0 => 'Dramat',
       1 => 'Fantasy',
     ),
     'type' => 'Serial',
-    'cast' => 
+    'cast' =>
     array (
       0 => 'Elizabeth Debicki',
       1 => 'Paul Mescal',
     ),
     'description' => 'Grupa ludzi budzi się na luksusowej wyspie, nie pamiętając, jak się tam znaleźli.',
     'popularity' => 97,
-    'reviews' => 
+    'reviews' =>
     array (
-      0 => 
+      0 =>
       array (
         'user' => 'Użytkownik',
         'text' => 'dec',
         'date' => '2026-01-23',
       ),
-      1 => 
+      1 =>
       array (
         'user' => 'Użytkownik',
         'text' => 'z',
         'date' => '2026-01-23',
       ),
-      2 => 
+      2 =>
       array (
         'user' => 'Użytkownik',
         'text' => 'recenzja',
         'date' => '2026-01-23',
       ),
-      3 => 
+      3 =>
       array (
         'user' => 'Użytkownik',
         'text' => 'z',
         'date' => '2026-01-23',
       ),
-      4 => 
+      4 =>
       array (
         'user' => 'Użytkownik',
         'text' => 'rec',
         'date' => '2026-01-23',
       ),
-      5 => 
+      5 =>
       array (
         'user' => 'Użytkownik',
         'text' => 's',
         'date' => '2026-01-23',
       ),
-      6 => 
+      6 =>
       array (
         'user' => 'Użytkownik',
         'text' => 'dobra',
@@ -658,7 +658,7 @@ return array (
       ),
     ),
   ),
-  17 => 
+  17 =>
   array (
     'id' => 18,
     'title' => 'Bitwa o Marsa',
@@ -669,24 +669,24 @@ return array (
     'year' => 2018,
     'duration' => '156 min',
     'language' => 'Angielski',
-    'genres' => 
+    'genres' =>
     array (
       0 => 'Sci-Fi',
       1 => 'Akcja',
     ),
     'type' => 'Film',
-    'cast' => 
+    'cast' =>
     array (
       0 => 'Matt Damon',
       1 => 'Adam Driver',
     ),
     'description' => 'Wielka produkcja o pierwszej kolonii na Marsie.',
     'popularity' => 81,
-    'reviews' => 
+    'reviews' =>
     array (
     ),
   ),
-  18 => 
+  18 =>
   array (
     'id' => 19,
     'title' => 'Śmiech przez Łzy',
@@ -697,24 +697,24 @@ return array (
     'year' => 2023,
     'duration' => '98 min',
     'language' => 'Angielski',
-    'genres' => 
+    'genres' =>
     array (
       0 => 'Komedia',
       1 => 'Dramat',
     ),
     'type' => 'Film',
-    'cast' => 
+    'cast' =>
     array (
       0 => 'Emma Stone',
       1 => 'Ryan Gosling',
     ),
     'description' => 'Słodko-gorzka historia o dwojgu nieznajomych, którzy spotykają się w najgorszych momentach.',
     'popularity' => 76,
-    'reviews' => 
+    'reviews' =>
     array (
     ),
   ),
-  19 => 
+  19 =>
   array (
     'id' => 20,
     'title' => 'Cień Północy',
@@ -725,21 +725,22 @@ return array (
     'year' => 2024,
     'duration' => '1 sezon',
     'language' => 'Koreański',
-    'genres' => 
+    'genres' =>
     array (
       0 => 'Thriller',
       1 => 'Dramat',
     ),
     'type' => 'Serial',
-    'cast' => 
+    'cast' =>
     array (
       0 => 'Gong Yoo',
       1 => 'Bae Doona',
     ),
     'description' => 'Mroczny thriller kryminalny z Seulu. Detektyw ściga seryjnego mordercę.',
     'popularity' => 90,
-    'reviews' => 
+    'reviews' =>
     array (
     ),
   ),
 );
+
