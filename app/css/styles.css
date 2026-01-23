@@ -1,3 +1,4 @@
+/* --- BAZOWE RESETOWANIE --- */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -10,6 +11,7 @@ body {
   color: #eaeaea;
 }
 
+/* --- TOP BAR & LOGO --- */
 .top-bar {
   display: flex;
   gap: 12px;
@@ -18,7 +20,17 @@ body {
   position: sticky;
   top: 0;
   z-index: 10;
+  align-items: center;
 }
+
+.logo {
+  font-weight: bold;
+  font-size: 20px;
+  margin-right: 10px;
+}
+
+.logo .plus { color: #3b82f6; }
+.logo .flix { color: #fff; }
 
 .top-bar input,
 .top-bar select,
@@ -30,15 +42,10 @@ body {
   border-radius: 6px;
 }
 
-.top-bar input {
-  flex: 1;
-}
+.top-bar input { flex: 1; }
+.top-bar button { cursor: pointer; background: #3b82f6; }
 
-.top-bar button {
-  cursor: pointer;
-  background: #3b82f6;
-}
-
+/* --- UKŁAD STRONY --- */
 .content {
   margin-left: 260px;
   padding: 20px;
@@ -56,23 +63,10 @@ body {
   border-right: 1px solid #222;
 }
 
-.filter-group {
-  margin-bottom: 20px;
-}
-
-.filter-group h4 {
-  margin-bottom: 8px;
-  font-size: 14px;
-  opacity: 0.8;
-}
-
-.filter-option {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 6px;
-  font-size: 14px;
-}
+/* --- FILTRY --- */
+.filter-group { margin-bottom: 20px; }
+.filter-group h4 { margin-bottom: 8px; font-size: 14px; opacity: 0.8; }
+.filter-option { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; font-size: 14px; }
 
 .filter-select {
   width: 100%;
@@ -84,16 +78,9 @@ body {
   color: #fff;
 }
 
-.results-bar {
-  margin-bottom: 12px;
-  opacity: 0.8;
-}
-
-.no-results {
-  padding: 40px;
-  text-align: center;
-  opacity: 0.6;
-}
+/* --- GRID FILMÓW --- */
+.results-bar { margin-bottom: 12px; opacity: 0.8; }
+.no-results { padding: 40px; text-align: center; opacity: 0.6; }
 
 .movies-grid {
   display: grid;
@@ -109,21 +96,10 @@ body {
   transition: transform 0.2s ease;
 }
 
-.movie-card:hover {
-  transform: translateY(-4px);
-}
+.movie-card:hover { transform: translateY(-4px); }
 
-.movie-poster {
-  position: relative;
-  aspect-ratio: 2 / 3;
-  background: #000;
-}
-
-.movie-poster img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
+.movie-poster { position: relative; aspect-ratio: 2 / 3; background: #000; }
+.movie-poster img { width: 100%; height: 100%; object-fit: cover; }
 
 .movie-platform {
   position: absolute;
@@ -145,20 +121,9 @@ body {
   border-radius: 4px;
 }
 
-.movie-info {
-  padding: 10px;
-}
-
-.movie-info h3 {
-  font-size: 14px;
-  margin-bottom: 6px;
-}
-
-.movie-meta {
-  font-size: 12px;
-  opacity: 0.7;
-  margin-bottom: 6px;
-}
+.movie-info { padding: 10px; }
+.movie-info h3 { font-size: 14px; margin-bottom: 6px; }
+.movie-meta { font-size: 12px; opacity: 0.7; margin-bottom: 6px; }
 
 .movie-genres span {
   font-size: 11px;
@@ -168,92 +133,128 @@ body {
   margin-right: 4px;
 }
 
-.modal-overlay {
+/* --- NAPRAWA MODALA (POŁĄCZONE I POPRAWIONE) --- */
+
+#movieModal.modal-overlay {
+  display: none;
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.75);
-  display: none;
+  background: rgba(0, 0, 0, 0.9);
   align-items: center;
   justify-content: center;
-  z-index: 100;
-}
-
-.modal-overlay.active {
-  display: flex;
-}
-
-.modal {
-  background: #151821;
-  max-width: 600px;
-  width: 90%;
-  border-radius: 12px;
+  z-index: 9999;
   padding: 20px;
-  position: relative;
 }
 
-.modal-close {
-  position: absolute;
-  right: 12px;
-  top: 12px;
-  background: none;
-  border: none;
-  font-size: 24px;
-  color: #fff;
-  cursor: pointer;
+#movieModal.modal-overlay.active { display: flex; }
+
+#modalContent.modal {
+  background: #151821;
+  max-width: 800px;
+  width: 100%;
+  max-height: 90vh;
+  border-radius: 12px;
+  position: relative;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 0 40px rgba(0,0,0,0.8);
 }
+
+.modal-header { position: relative; width: 100%; min-height: 250px; }
 
 .modal-backdrop {
   width: 100%;
-  height: 200px;
+  height: 100%;
+  min-height: 250px;
   object-fit: cover;
-  border-radius: 8px;
-  margin-bottom: 12px;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
 }
+
+.close-modal {
+  position: absolute;
+  right: 15px;
+  top: 15px;
+  background: rgba(0,0,0,0.6);
+  border: none;
+  font-size: 28px;
+  color: #fff;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-body { padding: 25px; }
+
+.modal-title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.modal-title-row h1 { font-size: 24px; }
 
 .modal-meta {
   display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  font-size: 13px;
-  opacity: 0.8;
+  gap: 15px;
+  font-size: 14px;
+  opacity: 0.7;
+  margin-bottom: 15px;
+}
+
+.modal-description { line-height: 1.6; margin-bottom: 15px; }
+
+/* --- RECENZJE --- */
+.reviews-section { margin-top: 20px; }
+
+.review-item {
+  background: #1e2230;
+  padding: 15px;
+  border-radius: 8px;
   margin-bottom: 12px;
+  border-left: 4px solid #3b82f6;
 }
 
-#modalDescription {
-  margin-bottom: 12px;
-  line-height: 1.5;
+#newReviewText {
+  width: 100%;
+  padding: 12px;
+  background: #0f1115;
+  color: white;
+  border: 1px solid #333;
+  border-radius: 8px;
+  margin-top: 10px;
 }
 
-#modalCast {
-  font-size: 13px;
-  opacity: 0.85;
-  margin-bottom: 16px;
+#newReviewText:focus {
+  border-color: #3b82f6;
+  outline: none;
 }
 
-.btn-watch {
+.btn-play {
   background: #3b82f6;
   border: none;
   color: #fff;
-  padding: 10px 16px;
+  padding: 12px;
   border-radius: 6px;
   cursor: pointer;
+  font-weight: bold;
   width: 100%;
+  margin-top: 20px;
 }
 
+/* --- RWD --- */
 @media (max-width: 900px) {
-  .filters {
-    position: static;
-    width: 100%;
-    height: auto;
-    border-right: none;
-  }
-
-  .content {
-    margin-left: 0;
-  }
-
-  .top-bar {
-    flex-wrap: wrap;
-  }
-  
+  .filters { position: static; width: 100%; height: auto; border-right: none; }
+  .content { margin-left: 0; }
+  .top-bar { flex-wrap: wrap; }
 }
+
+/* --- ADMIN PANEL HELPER CLASSES --- */
+.admin-card { background: #151821; padding: 20px; border-radius: 12px; border: 1px solid #222; margin-top: 20px; }

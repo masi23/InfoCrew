@@ -1,10 +1,15 @@
 import { $, $$ } from "../utils/dom.js";
 
 export function getFilters() {
+  // Pobieramy tablice, aby móc je złączyć przecinkami dla PHP
+  const platformArray = [...$$('input[name="platform"]:checked')].map((el) => el.value);
+  const categoryArray = [...$$('input[name="category"]:checked')].map((el) => el.value);
+
   return {
     search: $("#searchInput").value.toLowerCase(),
-    platforms: [...$$('input[name="platform"]:checked')].map((el) => el.value),
-    categories: [...$$('input[name="category"]:checked')].map((el) => el.value),
+    // PHP oczekuje stringa "Akcja,Dramat", a nie tablicy JS
+    platforms: platformArray.join(','),
+    categories: categoryArray.join(','),
     language: $("#languageFilter").value,
     year: $("#yearFilter").value,
     rating: $("#ratingFilter").value,
@@ -21,17 +26,20 @@ export function applyFilters(movies, filters) {
       (m) =>
         m.title.toLowerCase().includes(filters.search) ||
         m.description.toLowerCase().includes(filters.search) ||
-        m.cast.some((c) => c.toLowerCase().includes(filters.search))
+        (m.cast && m.cast.some((c) => c.toLowerCase().includes(filters.search)))
     );
   }
 
-  if (filters.platforms.length) {
-    result = result.filter((m) => filters.platforms.includes(m.platform));
+  // Obsługa tablic (jeśli filtry pochodzą z lokalnego JS) lub stringów (z API)
+  if (filters.platforms && filters.platforms.length) {
+    const pList = Array.isArray(filters.platforms) ? filters.platforms : filters.platforms.split(',');
+    result = result.filter((m) => pList.includes(m.platform));
   }
 
-  if (filters.categories.length) {
+  if (filters.categories && filters.categories.length) {
+    const cList = Array.isArray(filters.categories) ? filters.categories : filters.categories.split(',');
     result = result.filter((m) =>
-      m.genres.some((g) => filters.categories.includes(g))
+      m.genres && m.genres.some((g) => cList.includes(g))
     );
   }
 
@@ -58,14 +66,15 @@ export function applyFilters(movies, filters) {
 }
 
 function sortMovies(movies, sort) {
+  const result = [...movies];
   switch (sort) {
     case "rating":
-      return movies.sort((a, b) => b.rating - a.rating);
+      return result.sort((a, b) => b.rating - a.rating);
     case "newest":
-      return movies.sort((a, b) => b.year - a.year);
+      return result.sort((a, b) => b.year - a.year);
     case "title":
-      return movies.sort((a, b) => a.title.localeCompare(b.title, "pl"));
+      return result.sort((a, b) => a.title.localeCompare(b.title, "pl"));
     default:
-      return movies.sort((a, b) => b.popularity - a.popularity);
+      return result.sort((a, b) => (b.popularity || 0) - (a.popularity || 0));
   }
 }

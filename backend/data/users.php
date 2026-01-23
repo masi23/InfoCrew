@@ -1,5 +1,5 @@
 <?php
-
+// Tymczasowy plik do wygenerowania hasha
 return [
     [
         'id' => 1,
@@ -8,3 +8,4 @@ return [
         'role' => 'admin'
     ]
 ];
+

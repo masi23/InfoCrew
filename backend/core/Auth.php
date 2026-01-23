@@ -9,9 +9,10 @@ class Auth
         }
     }
 
-    public static function login(User $user)
+    public static function login($user)
     {
         self::start();
+        // Zapisujemy dane jako tablicę (object z repozytorium zostanie zrzucony do tablicy)
         $_SESSION['user'] = [
             'id' => $user->id,
             'username' => $user->username,
@@ -22,6 +23,7 @@ class Auth
     public static function logout()
     {
         self::start();
+        $_SESSION = [];
         session_destroy();
     }
 
@@ -34,10 +36,9 @@ class Auth
     public static function checkAdmin()
     {
         $user = self::user();
-        if (!$user || $user['role'] !== 'admin') {
-            http_response_code(403);
-            echo json_encode(['error' => 'Brak dostępu']);
-            exit;
+        // Jeśli nie ma zalogowanego admina, wyrzucamy wyjątek zamiast exit
+        if (!$user || ($user['role'] ?? '') !== 'admin') {
+            throw new Exception("Brak autoryzacji");
         }
     }
 }

@@ -10,8 +10,8 @@
   <body>
     <header class="top-bar">
       <div class="logo">
-  <span class="plus">PLUS</span><span class="flix">FLIX</span>
-</div>
+        <span class="plus">PLUS</span><span class="flix">FLIX</span>
+      </div>
       <input
         type="text"
         id="searchInput"
@@ -137,22 +137,9 @@
       <section id="moviesGrid" class="movies-grid"></section>
     </main>
 
-    <div id="modalOverlay" class="modal-overlay">
-      <div class="modal">
-        <button id="modalClose" class="modal-close">×</button>
-
-        <img id="modalBackdrop" class="modal-backdrop" alt="" />
-
-        <h2 id="modalTitle"></h2>
-
-        <div id="modalMeta" class="modal-meta"></div>
-
-        <p id="modalDescription"></p>
-
-        <div id="modalCast"></div>
-
-        <button id="btnWatch" class="btn-watch">Oglądaj</button>
-      </div>
+    <div id="movieModal" class="modal-overlay">
+      <div id="modalContent" class="modal">
+        </div>
     </div>
 
     <script type="module" src="js/main.js"></script>
