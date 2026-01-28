@@ -64,7 +64,8 @@ export function openModal(movie) {
                   </div>
                   <p style="color: #ccc; margin-top: 8px; line-height: 1.5;">${r.text}</p>
                   <div style="margin-top: 8px; display: flex; gap: 10px; align-items: center;">
-                    <button onclick="window.likeReview('${movie.id}', '${r.id}')" 
+                    <button type="button" onclick="window.likeReview('${movie.id}', '${r.id}')"
+ 
                             style="background: none; border: 1px solid #333; color: #888; padding: 4px 10px; 
                                    border-radius: 4px; cursor: pointer; font-size: 12px;">
                       👍 ${r.likes || 0}
@@ -182,22 +183,21 @@ window.submitReview = async (movieId) => {
 
 window.likeReview = async (movieId, reviewId) => {
   try {
+    const btn = event.target.closest("button");
+
     const url = `${API}?controller=movie&action=likeReview&movieId=${movieId}&reviewId=${reviewId}`;
     
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    });
+    const response = await fetch(url, { method: 'POST' });
+    const result = await response.json();
 
-    if (response.ok) {
-      location.reload();
+    if (result.success) {
+      const span = btn.querySelector("span");
+      span.textContent = parseInt(span.textContent) + 1;
     } else {
-      const result = await response.json();
       alert("Błąd: " + (result.error || "Nie udało się polubić"));
     }
   } catch (error) {
     console.error("Błąd:", error);
   }
 };
+

@@ -1,221 +1,51 @@
 <?php
 
 require_once __DIR__ . '/../repositories/MovieRepository.php';
+require_once __DIR__ . '/../repositories/ReviewRepository.php';
 require_once __DIR__ . '/../core/Auth.php';
 
 class MovieController
 {
     private MovieRepository $repo;
+    private ReviewRepository $reviewRepo;
 
     public function __construct()
     {
         $this->repo = new MovieRepository();
+        $this->reviewRepo = new ReviewRepository();
     }
 
-    /**
-     * Pobieranie filmów z uwzględnieniem filtrów
-     * GET ?controller=movie&action=index
-     */
+    // ==================== FILMY ====================
+
     public function index()
     {
         $movies = $this->repo->findFiltered($_GET);
-        
         header('Content-Type: application/json');
         echo json_encode(array_values($movies));
     }
 
-    /**
-     * Pobieranie danych jednego filmu
-     * GET ?controller=movie&action=show&id={id}
-     */
     public function show()
-    {
-        $id = $_GET['id'] ?? null;
-        if (!$id) {
-            http_response_code(400);
-            echo json_encode(['error' => 'Brak ID']);
-            return;
-        }
-
-        $movie = $this->repo->findById($id);
-
-        header('Content-Type: application/json');
-        if ($movie) {
-            echo json_encode($movie);
-        } else {
-            http_response_code(404);
-            echo json_encode(['error' => 'Film nie istnieje']);
-        }
+{
+    $id = $_GET['id'] ?? null;
+    if (!$id) {
+        http_response_code(400);
+        echo json_encode(['error' => 'Brak ID']);
+        return;
     }
 
-    /**
-     * Dodawanie nowego filmu (wymaga admina)
-     * POST ?controller=movie&action=create
-     */
-    public function create()
-    {
-        $data = json_decode(file_get_contents('php://input'), true);
+    $movie = $this->repo->findById($id);
 
-        if (!$data || empty($data['title'])) {
-            http_response_code(400);
-            echo json_encode(['error' => 'Tytuł jest wymagany']);
-            return;
-        }
-
-        if ($this->repo->create($data)) {
-            header('Content-Type: application/json');
-            echo json_encode(['success' => true]);
-        } else {
-            http_response_code(500);
-            echo json_encode(['error' => 'Błąd zapisu w bazie danych']);
-        }
+    if (!$movie) {
+        http_response_code(404);
+        echo json_encode(['error' => 'Film nie istnieje']);
+        return;
     }
 
-    /**
-     * Edycja istniejącego filmu (wymaga admina)
-     * POST ?controller=movie&action=update
-     */
-    public function update()
-    {
-        $data = json_decode(file_get_contents('php://input'), true);
-        $id = $_GET['id'] ?? ($data['id'] ?? null);
-
-        if (!$id) {
-            http_response_code(400);
-            echo json_encode(['error' => 'Brak ID filmu do edycji']);
-            return;
-        }
-
-        if ($this->repo->update($id, $data)) {
-            header('Content-Type: application/json');
-            echo json_encode(['success' => true]);
-        } else {
-            http_response_code(500);
-            echo json_encode(['error' => 'Błąd aktualizacji']);
-        }
-    }
-
-    /**
-     * Usuwanie filmu (wymaga admina)
-     * GET ?controller=movie&action=delete&id={id}
-     */
-    public function delete()
-    {
-        $id = $_GET['id'] ?? null;
-        if (!$id) {
-            http_response_code(400);
-            echo json_encode(['error' => 'Brak ID do usunięcia']);
-            return;
-        }
-
-        if ($this->repo->delete($id)) {
-            header('Content-Type: application/json');
-            echo json_encode(['success' => true]);
-        } else {
-            http_response_code(500);
-            echo json_encode(['error' => 'Błąd usuwania']);
-        }
-    }
+    echo json_encode($movie);
+}
 
     // ==================== RECENZJE ====================
 
-    /**
-     * Dodawanie nowej recenzji do filmu
-     * POST ?controller=movie&action=addReview&id={id}
-     */
-    public function addReview()
-    {
-        $id = $_GET['id'] ?? null;
-        $data = json_decode(file_get_contents('php://input'), true);
-
-        if (!$id) {
-            http_response_code(400);
-            echo json_encode(['error' => 'Brak ID filmu']);
-            return;
-        }
-
-        if (!$data || empty($data['text'])) {
-            http_response_code(400);
-            echo json_encode(['error' => 'Brak treści recenzji']);
-            return;
-        }
-
-        if ($this->repo->addReview($id, $data)) {
-            header('Content-Type: application/json');
-            echo json_encode(['success' => true]);
-        } else {
-            http_response_code(500);
-            echo json_encode(['error' => 'Błąd podczas zapisywania recenzji']);
-        }
-    }
-
-    /**
-     * Aktualizacja recenzji (wymaga admina)
-     * POST ?controller=movie&action=updateReview&movieId={}&reviewId={}
-     */
-    public function updateReview()
-    {
-        try {
-            Auth::checkAdmin();
-        } catch (Exception $e) {
-            http_response_code(401);
-            echo json_encode(['error' => $e->getMessage()]);
-            return;
-        }
-
-        $movieId = $_GET['movieId'] ?? null;
-        $reviewId = $_GET['reviewId'] ?? null;
-        $data = json_decode(file_get_contents('php://input'), true);
-
-        if (!$movieId || !$reviewId) {
-            http_response_code(400);
-            echo json_encode(['error' => 'Brak ID filmu lub recenzji']);
-            return;
-        }
-
-        if ($this->repo->updateReview($movieId, $reviewId, $data)) {
-            echo json_encode(['success' => true]);
-        } else {
-            http_response_code(500);
-            echo json_encode(['error' => 'Błąd aktualizacji recenzji']);
-        }
-    }
-
-    /**
-     * Usuwanie recenzji (wymaga admina)
-     * GET ?controller=movie&action=deleteReview&movieId={}&reviewId={}
-     */
-    public function deleteReview()
-    {
-        try {
-            Auth::checkAdmin();
-        } catch (Exception $e) {
-            http_response_code(401);
-            echo json_encode(['error' => $e->getMessage()]);
-            return;
-        }
-
-        $movieId = $_GET['movieId'] ?? null;
-        $reviewId = $_GET['reviewId'] ?? null;
-
-        if (!$movieId || !$reviewId) {
-            http_response_code(400);
-            echo json_encode(['error' => 'Brak ID filmu lub recenzji']);
-            return;
-        }
-
-        if ($this->repo->deleteReview($movieId, $reviewId)) {
-            echo json_encode(['success' => true]);
-        } else {
-            http_response_code(500);
-            echo json_encode(['error' => 'Błąd usuwania recenzji']);
-        }
-    }
-
-    /**
-     * Podbijanie recenzji (like)
-     * POST ?controller=movie&action=likeReview&movieId={}&reviewId={}
-     */
     public function likeReview()
     {
         $movieId = $_GET['movieId'] ?? null;
@@ -227,52 +57,10 @@ class MovieController
             return;
         }
 
-        if ($this->repo->likeReview($movieId, $reviewId)) {
-            echo json_encode(['success' => true]);
-        } else {
-            http_response_code(500);
-            echo json_encode(['error' => 'Błąd podbijania recenzji']);
-        }
+        $this->reviewRepo->likeReview($movieId, $reviewId);
+        echo json_encode(['success' => true]);
     }
 
-    /**
-     * Wyróżnianie recenzji (wymaga admina)
-     * POST ?controller=movie&action=highlightReview&movieId={}&reviewId={}
-     */
-    public function highlightReview()
-    {
-        try {
-            Auth::checkAdmin();
-        } catch (Exception $e) {
-            http_response_code(401);
-            echo json_encode(['error' => $e->getMessage()]);
-            return;
-        }
-
-        $movieId = $_GET['movieId'] ?? null;
-        $reviewId = $_GET['reviewId'] ?? null;
-        $data = json_decode(file_get_contents('php://input'), true);
-
-        if (!$movieId || !$reviewId) {
-            http_response_code(400);
-            echo json_encode(['error' => 'Brak ID filmu lub recenzji']);
-            return;
-        }
-
-        $highlight = $data['highlight'] ?? true;
-
-        if ($this->repo->highlightReview($movieId, $reviewId, $highlight)) {
-            echo json_encode(['success' => true]);
-        } else {
-            http_response_code(500);
-            echo json_encode(['error' => 'Błąd wyróżniania recenzji']);
-        }
-    }
-
-    /**
-     * Pobieranie wszystkich recenzji (dla panelu admina)
-     * GET ?controller=movie&action=allReviews
-     */
     public function allReviews()
     {
         try {
@@ -283,7 +71,6 @@ class MovieController
             return;
         }
 
-        $reviews = $this->repo->getAllReviews();
-        echo json_encode($reviews);
+        echo json_encode($this->reviewRepo->getAll());
     }
 }

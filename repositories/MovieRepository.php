@@ -2,16 +2,21 @@
 
 require_once __DIR__ . '/../models/Movie.php';
 require_once __DIR__ . '/../core/ORM.php';
+require_once __DIR__ . '/ReviewRepository.php';
+
 
 class MovieRepository
 {
     private array $data;
     private string $filePath;
+    private ReviewRepository $reviewRepo;
+
 
     public function __construct()
     {
         $this->filePath = __DIR__ . '/../data/movies.php';
         $this->data = file_exists($this->filePath) ? require $this->filePath : [];
+        $this->reviewRepo = new ReviewRepository();
     }
 
     public function getAll(): array
@@ -49,7 +54,7 @@ class MovieRepository
         $movie->cast = $row['cast'] ?? [];
         $movie->description = $row['description'] ?? '';
         $movie->popularity = $row['popularity'] ?? 0;
-        $movie->reviews = $row['reviews'] ?? [];
+        $movie->reviews = $this->reviewRepo->getByMovie($movie->id);
         return $movie;
     }
 
@@ -59,6 +64,7 @@ class MovieRepository
             if ($row['id'] == $id) {
                 // Zwracamy tablicę z obsługą country/language
                 $row['country'] = $row['country'] ?? $row['language'] ?? '';
+                $row['reviews'] = $this->reviewRepo->getByMovie($id);
                 return $row;
             }
         }
