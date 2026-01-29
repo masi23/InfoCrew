@@ -73,4 +73,49 @@ class MovieController
 
         echo json_encode($this->reviewRepo->getAll());
     }
+
+    public function addReview()
+{
+    $movieId = $_GET['id'] ?? null;
+
+    if (!$movieId) {
+        http_response_code(400);
+        echo json_encode(['error' => 'Brak ID filmu']);
+        return;
+    }
+
+    $input = json_decode(file_get_contents("php://input"), true);
+
+    if (!$input || strlen(trim($input['text'] ?? '')) < 3) {
+        http_response_code(400);
+        echo json_encode(['error' => 'Recenzja musi mieć min. 3 znaki']);
+        return;
+    }
+    // Generowanie unikalnego ID recenzji (wszystkie recenzje a Nie dla kazdego filmu)
+    $allReviews = $this->reviewRepo->getAll();
+    $nextId = 1;
+
+    if (!empty($allReviews)) 
+    {
+        $ids = array_column($allReviews, 'id');
+        $nextId = max($ids) + 1;
+    }
+
+    $review = [
+        //'id' => substr(uniqid(), -6),
+        'id' => $nextId,
+        'movieId' => $movieId,
+        'user' => htmlspecialchars($input['user'] ?? 'Użytkownik'),
+        'text' => $input['text'],
+        'rating' => (int)($input['rating'] ?? 0),
+        'date' => date('Y-m-d'),
+        'likes' => 0,
+        'highlighted' => false
+    ];
+
+    $this->reviewRepo->add($review);
+
+    echo json_encode(['success' => true]);
+}
+
 }

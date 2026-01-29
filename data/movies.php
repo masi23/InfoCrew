@@ -330,12 +330,7 @@ return array (
     'popularity' => 91,
     'reviews' => 
     array (
-      0 => 
-      array (
-        'user' => 'Użytkownik',
-        'text' => 'recenzja',
-        'date' => '2026-01-23',
-      ),
+
     ),
   ),
   9 => 
@@ -394,48 +389,6 @@ return array (
     'popularity' => 96,
     'reviews' => 
     array (
-      0 => 
-      array (
-        'user' => 'Użytkownik',
-        'text' => 'recen',
-        'date' => '2026-01-23',
-      ),
-      1 => 
-      array (
-        'user' => 'Użytkownik',
-        'text' => 'recenzja',
-        'date' => '2026-01-23',
-      ),
-      2 => 
-      array (
-        'user' => 'Użytkownik',
-        'text' => 'z',
-        'date' => '2026-01-23',
-      ),
-      3 => 
-      array (
-        'user' => 'Użytkownik',
-        'text' => 'recenzja',
-        'date' => '2026-01-23',
-      ),
-      4 => 
-      array (
-        'user' => 'Użytkownik',
-        'text' => 'rec',
-        'date' => '2026-01-23',
-      ),
-      5 => 
-      array (
-        'user' => 'Użytkownik',
-        'text' => 'incepcja',
-        'date' => '2026-01-23',
-      ),
-      6 => 
-      array (
-        'user' => 'Użytkownik',
-        'text' => 'recenzja',
-        'date' => '2026-01-23',
-      ),
     ),
   ),
   11 => 

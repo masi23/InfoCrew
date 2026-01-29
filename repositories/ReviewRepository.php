@@ -42,4 +42,11 @@ class ReviewRepository {
         $this->saveAll($reviews);
         return true;
     }
+    public function add(array $review)
+    {
+    $reviews = $this->load();
+    $reviews[] = $review;
+    $this->saveAll($reviews);
+    }
+
 }
