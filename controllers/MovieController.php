@@ -46,34 +46,91 @@ class MovieController
 
     // ==================== RECENZJE ====================
 
-    public function likeReview()
-    {
-        $movieId = $_GET['movieId'] ?? null;
-        $reviewId = $_GET['reviewId'] ?? null;
+   public function likeReview()
+{
+    $movieId = $_GET['movieId'] ?? null;
+    $reviewId = $_GET['reviewId'] ?? null;
 
-        if (!$movieId || !$reviewId) {
-            http_response_code(400);
-            echo json_encode(['error' => 'Brak ID filmu lub recenzji']);
-            return;
-        }
+    if (!$movieId || !$reviewId) {
+        http_response_code(400);
+        echo json_encode(['error' => 'Brak wymaganych parametrów']);
+        return;
+    }
 
-        $this->reviewRepo->likeReview($movieId, $reviewId);
+    $this->reviewRepo->likeReview($movieId, $reviewId);
+    echo json_encode(['success' => true]);
+}
+
+   public function allReviews()
+{
+    try {
+        Auth::checkAdmin();
+    } catch (Exception $e) {
+        http_response_code(401);
+        echo json_encode(['error' => $e->getMessage()]);
+        return;
+    }
+
+    $reviews = $this->reviewRepo->getAll(); // Pobiera surowe recenzje
+    $movies = $this->repo->getAll(); // Pobiera wszystkie filmy z movies.php
+
+    // Tworzymy mapę [id_filmu => tytuł_filmu] dla szybkiego wyszukiwania
+    $movieTitles = [];
+    foreach ($movies as $movie) {
+        $movieTitles[$movie['id']] = $movie['title'];
+    }
+
+    // Dopasowujemy tytuły do recenzji
+    foreach ($reviews as &$review) {
+        $review['movieTitle'] = $movieTitles[$review['movieId']] ?? 'Nieznany';
+    }
+
+    echo json_encode($reviews);
+}
+   public function deleteReview()
+   {
+    try {
+        Auth::checkAdmin();
+    } catch (Exception $e) {
+        http_response_code(401);
+        echo json_encode(['error' => $e->getMessage()]);
+        return;
+    }
+
+    $movieId = $_GET['movieId'] ?? null;
+    $reviewId = $_GET['reviewId'] ?? null;
+
+    if ($this->reviewRepo->delete($movieId, $reviewId)) {
         echo json_encode(['success' => true]);
+    } else {
+        http_response_code(500);
+        echo json_encode(['error' => 'Błąd usuwania recenzji']);
+    }
+}
+
+
+   public function highlightReview()
+   {
+    try {
+        Auth::checkAdmin();
+    } catch (Exception $e) {
+        http_response_code(401);
+        echo json_encode(['error' => $e->getMessage()]);
+        return;
     }
 
-    public function allReviews()
-    {
-        try {
-            Auth::checkAdmin();
-        } catch (Exception $e) {
-            http_response_code(401);
-            echo json_encode(['error' => $e->getMessage()]);
-            return;
-        }
+    $movieId = $_GET['movieId'] ?? null;
+    $reviewId = $_GET['reviewId'] ?? null;
+    $data = json_decode(file_get_contents('php://input'), true);
+    $highlight = $data['highlight'] ?? false;
 
-        echo json_encode($this->reviewRepo->getAll());
+    if ($this->reviewRepo->setHighlight($movieId, $reviewId, $highlight)) {
+        echo json_encode(['success' => true]);
+    } else {
+        http_response_code(500);
+        echo json_encode(['error' => 'Błąd zmiany wyróżnienia']);
     }
-
+}
     public function addReview()
 {
     $movieId = $_GET['id'] ?? null;
@@ -118,4 +175,87 @@ class MovieController
     echo json_encode(['success' => true]);
 }
 
+public function create() {
+    try {
+        Auth::checkAdmin(); // Sprawdzenie uprawnień
+        $data = json_decode(file_get_contents('php://input'), true);
+        if ($this->repo->create($data)) {
+            echo json_encode(['success' => true]);
+        } else {
+            throw new Exception("Błąd zapisu filmu");
+        }
+    } catch (Exception $e) {
+        http_response_code(400);
+        echo json_encode(['error' => $e->getMessage()]);
+    }
+}
+
+public function update() {
+    try {
+        Auth::checkAdmin();
+        $id = $_GET['id'] ?? null;
+        $data = json_decode(file_get_contents('php://input'), true);
+        if ($this->repo->update($id, $data)) {
+            echo json_encode(['success' => true]);
+        } else {
+            throw new Exception("Błąd aktualizacji filmu");
+        }
+    } catch (Exception $e) {
+        http_response_code(400);
+        echo json_encode(['error' => $e->getMessage()]);
+    }
+}
+
+public function delete() {
+    try {
+        Auth::checkAdmin();
+        $id = $_GET['id'] ?? null;
+        if ($this->repo->delete($id)) {
+            echo json_encode(['success' => true]);
+        } else {
+            throw new Exception("Błąd usuwania filmu");
+        }
+    } catch (Exception $e) {
+        http_response_code(400);
+        echo json_encode(['error' => $e->getMessage()]);
+    }
+}
+
+// controllers/MovieController.php
+
+public function userDeleteReview() {
+    try {
+        // 1. Pobierz zalogowanego użytkownika z sesji
+        $currentUser = Auth::getCurrentUser(); // Zakładam, że masz taką metodę w Auth.php
+        if (!$currentUser) {
+            throw new Exception("Musisz być zalogowany, aby usunąć komentarz.");
+        }
+
+        $movieId = $_GET['movieId'] ?? null;
+        $reviewId = $_GET['reviewId'] ?? null;
+
+        // 2. Pobierz recenzję, aby sprawdzić autora
+        $review = $this->reviewRepo->getById($reviewId); // Musisz mieć taką metodę w repozytorium
+
+        if (!$review) {
+            throw new Exception("Recenzja nie istnieje.");
+        }
+
+        // 3. Sprawdź, czy zalogowany użytkownik to autor recenzji
+        if ($review['user'] !== $currentUser['username'] && !Auth::isAdmin()) {
+            throw new Exception("Nie masz uprawnień do usunięcia tej recenzji.");
+        }
+
+        // 4. Usuń
+        if ($this->reviewRepo->delete($movieId, $reviewId)) {
+            echo json_encode(['success' => true]);
+        } else {
+            throw new Exception("Błąd podczas usuwania.");
+        }
+
+    } catch (Exception $e) {
+        http_response_code(403);
+        echo json_encode(['error' => $e->getMessage()]);
+    }
+}
 }

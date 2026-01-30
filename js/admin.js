@@ -34,9 +34,11 @@ Object.keys(tabs).forEach((key) => {
   tabs[key].btn?.addEventListener("click", () => switchTab(key));
 });
 
+// --- AUTORYZACJA ---
+
 loginForm?.addEventListener("submit", async (e) => {
   e.preventDefault();
-  
+
   try {
     const res = await fetch(`${API}?controller=auth&action=login`, {
       method: "POST",
@@ -72,6 +74,8 @@ logoutBtn?.addEventListener("click", async () => {
   }
 });
 
+// --- ZARZĄDZANIE FILMAMI ---
+
 movieForm?.addEventListener("submit", async (e) => {
   e.preventDefault();
 
@@ -105,24 +109,24 @@ movieForm?.addEventListener("submit", async (e) => {
     const result = await res.json();
 
     if (res.ok && result.success) {
-      alert(data.id ? "Film zaktualizowany!" : "Film dodany!");
+      alert(data.id ? "Film został pomyślnie zaktualizowany!" : "Nowy film został dodany!");
       clearMovieForm();
       loadMovies();
     } else {
-      alert(result.error || "Błąd zapisu");
+      alert(result.error || "Błąd zapisu danych");
     }
   } catch (error) {
     console.error("Błąd:", error);
-    alert("Błąd połączenia");
+    alert("Błąd połączenia z API");
   }
 });
-
-document.getElementById("clearMovieForm")?.addEventListener("click", clearMovieForm);
 
 function clearMovieForm() {
   movieForm.reset();
   document.getElementById("movieId").value = "";
 }
+
+document.getElementById("clearMovieForm")?.addEventListener("click", clearMovieForm);
 
 async function loadMovies() {
   try {
@@ -136,7 +140,7 @@ async function loadMovies() {
       <div class="item-row">
         <div>
           <strong style="color: #fff;">${m.title}</strong>
-          <span style="color: #666; margin-left: 10px;">(${m.year}) - ${m.platform || 'Brak platformy'}</span>
+          <span style="color: #666; margin-left: 10px;">(${m.year}) - ${m.platform || 'Brak'}</span>
         </div>
         <div class="actions">
           <button onclick="editMovie('${m.id}')" class="btn btn-secondary" style="padding: 5px 10px;">Edytuj</button>
@@ -172,30 +176,32 @@ window.editMovie = async (id) => {
     window.scrollTo(0, 0);
     switchTab("movies");
   } catch (e) {
-    console.error("Błąd pobierania filmu:", e);
+    console.error("Błąd pobierania danych filmu:", e);
   }
 };
 
 window.deleteMovie = async (id) => {
-  if (!confirm("Czy na pewno chcesz usunąć ten film?")) return;
+  if (!confirm("Czy na pewno chcesz bezpowrotnie usunąć ten film?")) return;
 
   try {
     const res = await fetch(`${API}?controller=movie&action=delete&id=${id}`, { credentials: "include" });
     if (res.ok) {
-      alert("Film usunięty");
+      alert("Film został usunięty.");
       loadMovies();
     } else {
-      alert("Błąd usuwania");
+      alert("Błąd podczas usuwania filmu.");
     }
   } catch (e) {
     console.error("Błąd:", e);
   }
 };
 
+// --- ZARZĄDZANIE RECENZJAMI ---
+
 async function loadAllReviews() {
   try {
     const res = await fetch(`${API}?controller=movie&action=allReviews`, { credentials: "include" });
-    
+
     if (!res.ok) {
       document.getElementById("reviewsList").innerHTML = '<p style="color: #888;">Zaloguj się, aby zobaczyć recenzje.</p>';
       return;
@@ -205,7 +211,7 @@ async function loadAllReviews() {
     const container = document.getElementById("reviewsList");
 
     if (!reviews.length) {
-      container.innerHTML = '<p style="color: #888;">Brak recenzji.</p>';
+      container.innerHTML = '<p style="color: #888;">Brak recenzji w systemie.</p>';
       return;
     }
 
@@ -218,18 +224,18 @@ async function loadAllReviews() {
             </strong>
             ${r.rating ? `<span style="margin-left: 10px; color: #fbbf24;">★ ${r.rating}/10</span>` : ''}
             <span class="review-meta" style="margin-left: 10px;">
-              Film: <em>${r.movieTitle}</em>
+              Film: <em>${r.movieTitle || 'Nieznany'}</em>
             </span>
           </div>
           <span class="review-meta">${r.date} | 👍 ${r.likes || 0}</span>
         </div>
         <p class="review-text">${r.text}</p>
         <div class="review-actions">
-          <button onclick="highlightReview('${r.movieId}', '${r.id}', ${!r.highlighted})" 
+          <button onclick="highlightReview('${r.movieId}', '${r.id}', ${!r.highlighted})"
                   class="btn ${r.highlighted ? 'btn-secondary' : 'btn-success'}" style="padding: 5px 10px;">
             ${r.highlighted ? 'Usuń wyróżnienie' : 'Wyróżnij'}
           </button>
-          <button onclick="deleteReview('${r.movieId}', '${r.id}')" 
+          <button onclick="deleteReview('${r.movieId}', '${r.id}')"
                   class="btn btn-danger" style="padding: 5px 10px;">
             Usuń
           </button>
@@ -253,7 +259,7 @@ window.highlightReview = async (movieId, reviewId, highlight) => {
     if (res.ok) {
       loadAllReviews();
     } else {
-      alert("Błąd wyróżniania recenzji");
+      alert("Błąd podczas zmiany statusu wyróżnienia.");
     }
   } catch (e) {
     console.error("Błąd:", e);
@@ -261,7 +267,7 @@ window.highlightReview = async (movieId, reviewId, highlight) => {
 };
 
 window.deleteReview = async (movieId, reviewId) => {
-  if (!confirm("Czy na pewno chcesz usunąć tę recenzję?")) return;
+  if (!confirm("Czy na pewno chcesz usunąć tę recenzję? Tej akcji nie można cofnąć.")) return;
 
   try {
     const res = await fetch(`${API}?controller=movie&action=deleteReview&movieId=${movieId}&reviewId=${reviewId}`, {
@@ -269,15 +275,17 @@ window.deleteReview = async (movieId, reviewId) => {
     });
 
     if (res.ok) {
-      alert("Recenzja usunięta");
+      alert("Recenzja została pomyślnie usunięta.");
       loadAllReviews();
     } else {
-      alert("Błąd usuwania recenzji");
+      alert("Błąd podczas usuwania recenzji.");
     }
   } catch (e) {
     console.error("Błąd:", e);
   }
 };
+
+// --- ZARZĄDZANIE KATEGORIAMI ---
 
 async function loadCategories() {
   try {
@@ -311,10 +319,11 @@ document.getElementById("addCategoryBtn")?.addEventListener("click", async () =>
     });
 
     if (res.ok) {
+      alert("Kategoria została dodana.");
       document.getElementById("newCategoryName").value = "";
       loadCategories();
     } else {
-      alert("Błąd dodawania kategorii");
+      alert("Błąd podczas dodawania kategorii.");
     }
   } catch (e) {
     console.error("Błąd:", e);
@@ -322,16 +331,22 @@ document.getElementById("addCategoryBtn")?.addEventListener("click", async () =>
 });
 
 window.deleteCategory = async (id) => {
-  if (!confirm("Usunąć kategorię?")) return;
+  if (!confirm("Czy na pewno chcesz usunąć tę kategorię?")) return;
 
   try {
     const res = await fetch(`${API}?controller=category&action=delete&id=${id}`, { credentials: "include" });
-    if (res.ok) loadCategories();
-    else alert("Błąd usuwania");
+    if (res.ok) {
+      alert("Kategoria została usunięta.");
+      loadCategories();
+    } else {
+      alert("Błąd podczas usuwania kategorii.");
+    }
   } catch (e) {
     console.error("Błąd:", e);
   }
 };
+
+// --- ZARZĄDZANIE PLATFORMAMI ---
 
 async function loadPlatforms() {
   try {
@@ -358,7 +373,7 @@ async function loadPlatforms() {
 document.getElementById("addPlatformBtn")?.addEventListener("click", async () => {
   const name = document.getElementById("newPlatformName").value.trim();
   const color = document.getElementById("newPlatformColor").value;
-  
+
   if (!name) return alert("Podaj nazwę platformy");
 
   try {
@@ -370,10 +385,11 @@ document.getElementById("addPlatformBtn")?.addEventListener("click", async () =>
     });
 
     if (res.ok) {
+      alert("Platforma została dodana.");
       document.getElementById("newPlatformName").value = "";
       loadPlatforms();
     } else {
-      alert("Błąd dodawania platformy");
+      alert("Błąd podczas dodawania platformy.");
     }
   } catch (e) {
     console.error("Błąd:", e);
@@ -381,16 +397,22 @@ document.getElementById("addPlatformBtn")?.addEventListener("click", async () =>
 });
 
 window.deletePlatform = async (id) => {
-  if (!confirm("Usunąć platformę?")) return;
+  if (!confirm("Czy na pewno chcesz usunąć tę platformę?")) return;
 
   try {
     const res = await fetch(`${API}?controller=platform&action=delete&id=${id}`, { credentials: "include" });
-    if (res.ok) loadPlatforms();
-    else alert("Błąd usuwania");
+    if (res.ok) {
+      alert("Platforma została usunięta.");
+      loadPlatforms();
+    } else {
+      alert("Błąd podczas usuwania platformy.");
+    }
   } catch (e) {
     console.error("Błąd:", e);
   }
 };
+
+// --- PROFIL ADMINISTRATORA ---
 
 profileForm?.addEventListener("submit", async (e) => {
   e.preventDefault();
@@ -423,13 +445,13 @@ profileForm?.addEventListener("submit", async (e) => {
     const result = await res.json();
 
     if (res.ok && result.success) {
-      alert("Hasło zostało zmienione!");
+      alert("Dane profilowe zostały zaktualizowane pomyślnie.");
       profileForm.reset();
     } else {
-      alert(result.error || "Błąd zmiany hasła");
+      alert(result.error || "Błąd podczas aktualizacji profilu.");
     }
   } catch (e) {
     console.error("Błąd:", e);
-    alert("Błąd połączenia");
+    alert("Błąd połączenia z serwerem");
   }
 });

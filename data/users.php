@@ -1,9 +1,10 @@
 <?php
-return [
-    [
-        'id' => 1,
-        'username' => 'admin',
-        'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password: password
-        'role' => 'admin'
-    ]
-];
+return array (
+  0 => 
+  array (
+    'id' => 1,
+    'username' => 'admin',
+    'password' => '$2y$12$ALE/b.sTGlr5NnPTjw4tX.RXUOtW2kPEd/4Ax6jAx0ovOrL4JxGbW',
+    'role' => 'admin',
+  ),
+);

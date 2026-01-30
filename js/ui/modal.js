@@ -16,7 +16,10 @@ export function openModal(movie) {
     return;
   }
 
-  // Sortuj recenzje - wyróżnione na górze, potem po liczbie lajków
+  // Pobierz nazwę zalogowanego użytkownika (np. z localStorage po zalogowaniu admina)
+  // Jeśli Twoja aplikacja przechowuje to w sesji PHP, musisz najpierw pobrać te dane z API
+  const currentUser = localStorage.getItem('username') || "Użytkownik";
+
   const sortedReviews = [...reviews].sort((a, b) => {
     if (a.highlighted && !b.highlighted) return -1;
     if (!a.highlighted && b.highlighted) return 1;
@@ -40,18 +43,18 @@ export function openModal(movie) {
         <span>${movie.platform}</span>
       </div>
       <p class="modal-description">${movie.description}</p>
-      
+
       <hr style="border: 0; border-top: 1px solid #333; margin: 30px 0 20px;">
-      
+
       <div class="reviews-section">
         <h3>Recenzje i Komentarze (${reviews.length})</h3>
-        
+
         <div id="reviewsContainer" style="max-height: 400px; overflow-y: auto; margin-bottom: 20px;">
-          ${sortedReviews.length > 0 
+          ${sortedReviews.length > 0
             ? sortedReviews.map(r => `
-                <div class="review-item ${r.highlighted ? 'highlighted' : ''}" 
-                     style="background: ${r.highlighted ? '#1a2a1a' : '#1a1a1a'}; 
-                            padding: 12px; border-radius: 8px; margin-bottom: 10px; 
+                <div class="review-item ${r.highlighted ? 'highlighted' : ''}"
+                     style="background: ${r.highlighted ? '#1a2a1a' : '#1a1a1a'};
+                            padding: 12px; border-radius: 8px; margin-bottom: 10px;
                             border-left: 3px solid ${r.highlighted ? '#22c55e' : '#3b82f6'};">
                   <div style="display: flex; justify-content: space-between; align-items: center;">
                     <div>
@@ -60,15 +63,23 @@ export function openModal(movie) {
                       </strong>
                       ${r.rating ? `<span style="margin-left: 10px; color: #fbbf24;">★ ${r.rating}/10</span>` : ''}
                     </div>
-                    <small style="color: #666;">${r.date}</small>
+
+                    <div style="display: flex; gap: 10px; align-items: center;">
+                      ${r.user === currentUser ? `
+                        <button onclick="window.userDeleteReview('${movie.id}', '${r.id}')"
+                                style="background: none; border: 1px solid #ef4444; color: #ef4444; padding: 2px 8px; border-radius: 4px; cursor: pointer; font-size: 11px;">
+                          Usuń
+                        </button>
+                      ` : ''}
+                      <small style="color: #666;">${r.date}</small>
+                    </div>
                   </div>
                   <p style="color: #ccc; margin-top: 8px; line-height: 1.5;">${r.text}</p>
                   <div style="margin-top: 8px; display: flex; gap: 10px; align-items: center;">
                     <button type="button" onclick="window.likeReview('${movie.id}', '${r.id}')"
- 
-                            style="background: none; border: 1px solid #333; color: #888; padding: 4px 10px; 
+                            style="background: none; border: 1px solid #333; color: #888; padding: 4px 10px;
                                    border-radius: 4px; cursor: pointer; font-size: 12px;">
-                      👍 ${r.likes || 0}
+                      👍 <span>${r.likes || 0}</span>
                     </button>
                   </div>
                 </div>
@@ -79,11 +90,9 @@ export function openModal(movie) {
 
         <div class="add-review-form" style="background: #111; padding: 15px; border-radius: 8px;">
           <h4 style="margin-bottom: 10px; color: #fff;">Dodaj recenzję</h4>
-          
           <div style="display: flex; gap: 10px; margin-bottom: 10px;">
-            <input type="text" id="reviewUserName" placeholder="Twoje imię (opcjonalne)" 
+            <input type="text" id="reviewUserName" placeholder="Twoje imię (opcjonalne)"
                    style="flex: 1; padding: 8px; background: #1a1a1a; color: white; border: 1px solid #333; border-radius: 4px;">
-            
             <select id="reviewRating" style="padding: 8px; background: #1a1a1a; color: white; border: 1px solid #333; border-radius: 4px;">
               <option value="0">Bez oceny</option>
               <option value="10">10 - Arcydzieło</option>
@@ -98,13 +107,11 @@ export function openModal(movie) {
               <option value="1">1 - Tragedia</option>
             </select>
           </div>
-          
-          <textarea id="newReviewText" placeholder="Co sądzisz o tym tytule?" 
-            style="width: 100%; height: 80px; background: #1a1a1a; color: white; border: 1px solid #333; 
+          <textarea id="newReviewText" placeholder="Co sądzisz o tym tytule?"
+            style="width: 100%; height: 80px; background: #1a1a1a; color: white; border: 1px solid #333;
                    padding: 10px; border-radius: 6px; resize: vertical;"></textarea>
-          
-          <button onclick="window.submitReview('${movie.id}')" 
-            style="background: #3b82f6; color: white; border: none; padding: 12px; border-radius: 6px; 
+          <button onclick="window.submitReview('${movie.id}')"
+            style="background: #3b82f6; color: white; border: none; padding: 12px; border-radius: 6px;
                    margin-top: 10px; cursor: pointer; width: 100%; font-weight: bold; transition: background 0.2s;">
             Opublikuj recenzję
           </button>
@@ -120,6 +127,29 @@ export function openModal(movie) {
   if (closeBtn) closeBtn.onclick = closeModal;
 }
 
+// FUNKCJA USUWANIA PRZYPISANA DO WINDOW
+window.userDeleteReview = async (movieId, reviewId) => {
+  if (!confirm("Czy na pewno chcesz usunąć swój komentarz?")) return;
+
+  try {
+    const url = `${API}?controller=movie&action=deleteReview&movieId=${movieId}&reviewId=${reviewId}`;
+    const response = await fetch(url, {
+      method: 'GET', // Zmień na POST jeśli kontroler tego wymaga
+      credentials: 'include'
+    });
+
+    const result = await response.json();
+
+    if (result.success) {
+      alert("Komentarz został usunięty.");
+      location.reload(); // Odśwież stronę, aby zaktualizować listę
+    } else {
+      alert("Błąd: " + (result.error || "Nie udało się usunąć komentarza"));
+    }
+  } catch (error) {
+    console.error("Błąd połączenia:", error);
+  }
+};
 export function closeModal() {
   const modal = getModal();
   if (modal) {
@@ -134,7 +164,7 @@ window.submitReview = async (movieId) => {
   const textElement = document.getElementById('newReviewText');
   const userElement = document.getElementById('reviewUserName');
   const ratingElement = document.getElementById('reviewRating');
-  
+
   const text = textElement?.value?.trim() || "";
   const user = userElement?.value?.trim() || "Użytkownik";
   const rating = parseInt(ratingElement?.value) || 0;
@@ -144,20 +174,12 @@ window.submitReview = async (movieId) => {
     return;
   }
 
-  if (text.length < 3) {
-    alert("Recenzja musi mieć minimum 3 znaki!");
-    return;
-  }
-
   try {
     const url = `${API}?controller=movie&action=addReview&id=${movieId}`;
-    
+
     const response = await fetch(url, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         text: text,
         user: user,
@@ -169,35 +191,50 @@ window.submitReview = async (movieId) => {
     const result = await response.json();
 
     if (response.ok && result.success) {
+      // ZAPAMIĘTAJ UŻYTKOWNIKA, aby przycisk "Usuń" się pojawił
+      localStorage.setItem('username', user);
       alert("Dodano recenzję!");
       location.reload();
     } else {
-      console.error("Błąd serwera:", result);
       alert("Błąd: " + (result.error || "Nieznany błąd"));
-    }
-  } catch (error) {
-    console.error("Błąd JavaScript:", error);
-    alert("Wystąpił błąd przy wysyłaniu. Sprawdź konsolę (F12).");
-  }
-};
-
-window.likeReview = async (movieId, reviewId) => {
-  try {
-    const btn = event.target.closest("button");
-
-    const url = `${API}?controller=movie&action=likeReview&movieId=${movieId}&reviewId=${reviewId}`;
-    
-    const response = await fetch(url, { method: 'POST' });
-    const result = await response.json();
-
-    if (result.success) {
-      const span = btn.querySelector("span");
-      span.textContent = parseInt(span.textContent) + 1;
-    } else {
-      alert("Błąd: " + (result.error || "Nie udało się polubić"));
     }
   } catch (error) {
     console.error("Błąd:", error);
   }
-};
+}
 
+window.likeReview = async (movieId, reviewId) => {
+  try {
+    // Pobieramy przycisk, który został kliknięty
+    const btn = event.currentTarget;
+    const url = `${API}?controller=movie&action=likeReview&movieId=${movieId}&reviewId=${reviewId}`;
+
+    const response = await fetch(url, { method: 'POST' });
+    const result = await response.json();
+
+    if (result.success) {
+      // 1. Pobieramy obecną liczbę z tekstu przycisku (np. "👍 5")
+      const currentText = btn.textContent.trim();
+      const currentLikes = parseInt(currentText.replace('👍', '')) || 0;
+
+      // 2. Aktualizujemy cyfrę wewnątrz przycisku natychmiastowo
+      btn.innerHTML = `👍 ${currentLikes + 1}`;
+
+      // 3. WIZUALNY FEEDBACK: Zmiana wyglądu przycisku
+      btn.style.color = "#22c55e";          // Zmiana koloru tekstu na zielony
+      btn.style.borderColor = "#22c55e";    // Zmiana koloru ramki na zielony
+      btn.style.background = "rgba(34, 197, 94, 0.1)"; // Delikatne tło
+
+      // 4. BLOKADA: Wyłączamy możliwość ponownego kliknięcia
+      btn.disabled = true;
+      btn.style.cursor = "default";
+      // Usuwamy onclick, aby dodatkowo zabezpieczyć funkcję
+      btn.onclick = null;
+
+    } else {
+      alert("Błąd: " + (result.error || "Nie udało się polubić"));
+    }
+  } catch (error) {
+    console.error("Błąd połączenia:", error);
+  }
+};

@@ -4,8 +4,8 @@ return array (
   array (
     'id' => 1,
     'title' => 'Incepcja',
-    'poster' => 'https://fwcdn.pl/fpo/08/91/500891/7354571_1.3.jpg',
-    'backdrop' => 'https://fwcdn.pl/fpo/08/91/500891/7354571_1.3.jpg',
+    'poster' => 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=400&h=600&fit=crop',
+    'backdrop' => 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200&h=400&fit=crop',
     'platform' => 'Netflix',
     'rating' => 8.8,
     'year' => 2010,
@@ -28,18 +28,6 @@ return array (
     'popularity' => 95,
     'reviews' => 
     array (
-      0 => 
-      array (
-        'user' => 'Marek',
-        'text' => 'Genialny film, oglądałem 5 razy!',
-        'date' => '2024-01-10',
-      ),
-      1 => 
-      array (
-        'user' => 'Anna',
-        'text' => 'Trochę skomplikowany, ale warto.',
-        'date' => '2024-01-12',
-      ),
     ),
   ),
   1 => 
@@ -330,7 +318,6 @@ return array (
     'popularity' => 91,
     'reviews' => 
     array (
-
     ),
   ),
   9 => 

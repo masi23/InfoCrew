@@ -5,60 +5,113 @@ import { closeModal } from "./ui/modal.js";
 
 const API = "http://localhost:8000/index.php";
 
-// Główna funkcja aktualizująca widok
+/**
+ * Pobiera kategorie z serwera i renderuje je w panelu bocznym
+ */
+async function loadCategories() {
+  const categoryContainer = document.getElementById('dynamic-categories');
+  if (!categoryContainer) return;
+
+  try {
+    const response = await fetch(`${API}?controller=category&action=index`);
+    const categories = await response.json();
+
+    categoryContainer.innerHTML = '';
+
+    categories.forEach(category => {
+      const label = document.createElement('label');
+      label.className = 'filter-option';
+      label.innerHTML = `
+        <input type="checkbox" name="category" value="${category.name}" />
+        ${category.name}
+      `;
+      categoryContainer.appendChild(label);
+    });
+
+    categoryContainer.querySelectorAll('input').forEach(input => {
+      input.addEventListener('change', update);
+    });
+  } catch (error) {
+    console.error('Błąd ładowania kategorii:', error);
+  }
+}
+
+/**
+ * Pobiera platformy z serwera i renderuje je w panelu bocznym
+ */
+async function loadPlatforms() {
+  const platformContainer = document.getElementById('dynamic-platforms');
+  if (!platformContainer) return;
+
+  try {
+    const response = await fetch(`${API}?controller=platform&action=index`);
+    const platforms = await response.json();
+
+    platformContainer.innerHTML = '';
+
+    platforms.forEach(platform => {
+      const label = document.createElement('label');
+      label.className = 'filter-option';
+      label.innerHTML = `
+        <input type="checkbox" name="platform" value="${platform.name}" />
+        ${platform.name}
+      `;
+      platformContainer.appendChild(label);
+    });
+
+    platformContainer.querySelectorAll('input').forEach(input => {
+      input.addEventListener('change', update);
+    });
+  } catch (error) {
+    console.error('Błąd ładowania platform:', error);
+  }
+}
+
+/**
+ * Pobiera przefiltrowaną listę filmów i aktualizuje widok
+ */
 async function update() {
   try {
-    // 1. Pobieramy filtry z formularza bocznego
     const filters = getFilters();
-
-    // 2. Budujemy parametry URL (usuwamy puste wartości)
     const params = new URLSearchParams();
+
     Object.entries(filters).forEach(([key, value]) => {
       if (value && value !== "") {
         params.append(key, value);
       }
     });
 
-    // 3. Wysyłamy zapytanie do MovieController
     const url = `${API}?controller=movie&action=index&${params.toString()}`;
-    console.log("Fetching:", url);
-
     const response = await fetch(url);
 
-    if (!response.ok) {
-      throw new Error(`HTTP ${response.status}`);
-    }
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
     const data = await response.json();
-
-    // 4. Renderujemy przefiltrowane filmy
     renderMovies(data);
 
-    // 5. Aktualizacja licznika "Znaleziono"
     const resultsCount = $("#resultsCount");
-    if (resultsCount) {
-      resultsCount.textContent = data.length;
-    }
+    if (resultsCount) resultsCount.textContent = data.length;
 
-    // 6. Obsługa komunikatu "Brak wyników"
     const noResults = $("#noResults");
-    if (noResults) {
-      noResults.style.display = data.length === 0 ? "block" : "none";
-    }
+    if (noResults) noResults.style.display = data.length === 0 ? "block" : "none";
 
   } catch (error) {
     console.error("Błąd aktualizacji widoku:", error);
   }
 }
 
-// Inicjalizacja po załadowaniu DOM
+/**
+ * Inicjalizacja po załadowaniu struktury DOM
+ */
 document.addEventListener("DOMContentLoaded", () => {
-  // Pierwsze pobranie filmów
-  update();
+  // 1. Ładujemy dynamiczne filtry, a potem filmy
+  Promise.all([loadCategories(), loadPlatforms()]).then(() => {
+    update();
+  });
 
   const searchInput = $("#searchInput");
 
-  // Dynamiczne wyszukiwanie podczas pisania (z debounce)
+  // Dynamiczne wyszukiwanie (debounce)
   let debounceTimer;
   if (searchInput) {
     searchInput.addEventListener("input", () => {
@@ -70,35 +123,22 @@ document.addEventListener("DOMContentLoaded", () => {
   // Zmiana sortowania
   $("#sortSelect")?.addEventListener("change", update);
 
-  // Przycisk Reset
+  // Przycisk Reset filtrów
   $("#resetFilters")?.addEventListener("click", () => {
-    // Resetuj formularz filtrów
     document.querySelector("aside.filters form")?.reset();
-
-    // Wyczyść input wyszukiwania
-    if (searchInput) {
-      searchInput.value = "";
-    }
-
-    // Resetuj select sortowania
+    if (searchInput) searchInput.value = "";
     const sortSelect = $("#sortSelect");
-    if (sortSelect) {
-      sortSelect.value = "popularity";
-    }
-
-    // Odśwież listę
+    if (sortSelect) sortSelect.value = "popularity";
     update();
   });
 
-  // Reakcja na każdy checkbox i select w panelu bocznym
-  $$(".filter-option input, .filter-select").forEach((el) =>
+  // Reakcja na statyczne filtry
+  $$(".filter-option input:not([name='category']):not([name='platform']), .filter-select").forEach((el) =>
     el.addEventListener("change", update)
   );
 
   // --- OBSŁUGA MODALA ---
   const modalOverlay = $("#movieModal");
-
-  // Zamknięcie przez kliknięcie w tło lub przycisk X
   document.addEventListener("click", (e) => {
     if (e.target.id === "modalClose" || e.target.classList.contains("close-modal")) {
       closeModal();
@@ -108,7 +148,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Zamknięcie przez Escape, fokus na wyszukiwarce przez /
+  // Obsługa klawiatury
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape") closeModal();
     if (e.key === "/" && document.activeElement !== searchInput) {
